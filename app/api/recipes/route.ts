@@ -13,7 +13,6 @@ export async function GET() {
 
 export async function POST() {
   try {
-    console.log('POST /api/recipes - Creating default recipes...');
     const createdRecipes = await createDefaultRecipes();
     return NextResponse.json(
       { 

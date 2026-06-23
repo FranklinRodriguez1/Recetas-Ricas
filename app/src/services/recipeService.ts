@@ -156,13 +156,11 @@ export async function fetchRecipes(): Promise<RecipeDocument[]> {
 
     // If the collection is empty, create 10 default recipes
     if (count === 0) {
-      console.log('Recipe collection is empty. Inserting 10 default recipes...');
       await createDefaultRecipes();
     }
 
     // Fetch and return all recipes
     const recipes = await Recipe.find().lean();
-    console.log(`✅ Returning ${recipes.length} recipes`);
     return recipes;
   } catch (error) {
     console.error('Error in fetchRecipes:', error);
@@ -173,29 +171,18 @@ export async function fetchRecipes(): Promise<RecipeDocument[]> {
 // Function to create 5 default recipes
 export async function createDefaultRecipes(): Promise<RecipeDocument[]> {
   try {
-    console.log('🔍 Starting createDefaultRecipes...');
     const Recipe = await getRecipeModel();
-    console.log('✅ Recipe model acquired');
-    
-    console.log(`📝 Attempting to insert ${defaultRecipes.length} recipes...`);
-    console.log('📋 Recipes to insert:', JSON.stringify(defaultRecipes, null, 2));
-    
+
     const createdRecipes = await Recipe.insertMany(defaultRecipes, { 
       ordered: false 
     });
-    
-    console.log(`✅ insertMany completed`);
-    console.log(`📊 Recipes inserted: ${createdRecipes.length}`);
-    console.log('📌 Generated IDs:', createdRecipes.map(r => r._id));
-    
+
     // Verify the documents were saved
     const count = await Recipe.countDocuments();
-    console.log(`🔢 Total documents in DB after insert: ${count}`);
-    
+
     // Retrieve all recipes for verification
     const allRecipes = await Recipe.find().lean();
-    console.log(`📦 Recipes in DB: ${allRecipes.length}`);
-    
+
     return createdRecipes;
   } catch (error) {
     console.error('❌ Error creating recipes:', error);

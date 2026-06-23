@@ -63,7 +63,6 @@ const connectDB = async () => {
   }
 
   cache.conn = await cache.promise;
-  console.log("DB Online");
   return cache.conn;
 };
 

@@ -28,7 +28,6 @@ async function main() {
     throw new Error('MONGO_URI or MONGOURI is required in app/.env');
   }
 
-  console.log('Using URI:', uri);
   const conn = await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
   const db = conn.connection.db;
 
@@ -36,16 +35,11 @@ async function main() {
     throw new Error('MongoDB connection has no db instance');
   }
 
-  console.log('Connected database name:', db.databaseName);
-
   const collections = await db.listCollections().toArray();
-  console.log('Collections found:', collections.map((c) => c.name));
 
   const recipesCount = await db.collection('recipes').countDocuments();
-  console.log('Recipes count:', recipesCount);
 
   const sampleRecipes = await db.collection('recipes').find().limit(5).toArray();
-  console.log('Sample recipes:', sampleRecipes.map((doc) => ({ _id: doc._id?.toString(), nombre: doc.nombre })));
 
   await mongoose.disconnect();
 }
