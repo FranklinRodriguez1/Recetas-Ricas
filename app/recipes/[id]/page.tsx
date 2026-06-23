@@ -37,9 +37,34 @@ export default async function RecipePage({ params }: Props) {
       <img src={recipe.imagen} alt={recipe.nombre} className="w-full h-64 object-cover rounded mb-4" />
       <div className="mb-4 text-sm text-gray-600">⏱️ {recipe.tiempoPreparacion} • {recipe.dificultad}</div>
 
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Preparation</h2>
-        <p className="whitespace-pre-line">{recipe.preparacion || 'No instructions available.'}</p>
+      <div className="grid gap-8">
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Ingredients</h2>
+          {recipe.ingredientes && recipe.ingredientes.length > 0 ? (
+            <ul className="list-disc list-inside text-gray-700">
+              {recipe.ingredientes.map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No ingredients available.</p>
+          )}
+        </div>
+
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Preparation</h2>
+          {recipe.preparacion && Array.isArray(recipe.preparacion) && recipe.preparacion.length > 0 ? (
+            <ol className="list-decimal list-inside text-gray-700">
+              {recipe.preparacion.map((step: string, index: number) => (
+                <li key={index} className="mb-2">
+                  <span className="font-medium">Paso {index + 1}:</span> {step.replace(/^Paso \d+: ?/, '')}
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="text-gray-500">No instructions available.</p>
+          )}
+        </div>
       </div>
     </div>
   )

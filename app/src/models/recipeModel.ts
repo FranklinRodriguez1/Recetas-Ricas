@@ -7,7 +7,8 @@ export interface RecipeDocument extends Document {
   tiempoPreparacion: string;
   dificultad: string;
   isFavorite?: boolean;
-  preparacion?: string;
+  preparacion?: string[];
+  ingredientes?: string[];
 }
 
 const RecipeSchema: Schema<RecipeDocument> = new Schema({
@@ -16,7 +17,8 @@ const RecipeSchema: Schema<RecipeDocument> = new Schema({
   tiempoPreparacion: { type: String, required: true },
   dificultad: { type: String, required: true },
   isFavorite: { type: Boolean, default: false },
-  preparacion: { type: String, required: true },
+  preparacion: { type: [String], default: [] },
+  ingredientes: { type: [String], default: [] },
 });
 
 const Recipe: Model<RecipeDocument> =
