@@ -1,6 +1,7 @@
 import React from 'react'
 import { getRecipeById } from '@/lib/recipes'
 import RecipeFavoriteToggle from '@/app/src/components/RecipeFavoriteToggle'
+import BackButton from '@/app/src/components/BackButton'
 import Link from 'next/link'
 
 type Props = { params: Promise<{ id: string }> }
@@ -10,13 +11,23 @@ export default async function RecipePage({ params }: Props) {
   const recipe = await getRecipeById(id)
   
   if (!recipe) {
-    return <div className="p-6">Recipe not found.</div>
+    return (
+      <div className="p-6 max-w-3xl mx-auto">
+        <div className="mb-4">
+          <BackButton />
+        </div>
+        <div>Recipe not found.</div>
+      </div>
+    )
   }
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{recipe.nombre}</h1>
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <BackButton />
+          <h1 className="text-2xl font-bold">{recipe.nombre}</h1>
+        </div>
         <div className="flex items-center gap-2">
           <RecipeFavoriteToggle id={String(recipe._id)} initial={!!recipe.isFavorite} />
           <Link href="/favorites" className="px-3 py-1 bg-blue-500 text-white rounded">Favorites</Link>
